@@ -1,17 +1,23 @@
-import Button from '@mui/material/Button';
-import { useDispatch } from "react-redux";
-import { useApp } from "@hooks/useApp";
-import { changePalette } from "@redux/slices/appSlice";
 import { useLocales } from "@hooks/useLocales";
+import { Button } from "@mui/material";
+import { useApp } from "@hooks/useApp";
+import { useQuery } from "@tanstack/react-query";
+import { getMovies } from "@services/dataService";
 
 export const Home = () => {
   const {t, changeLocale, currentLocale} = useLocales();
-  const dispatch = useDispatch();
-  const {paletteMode} = useApp();
+  const {paletteMode, setAppConfig} = useApp();
+  const {data, isLoading, refetch} = useQuery({
+    queryKey: ["data"],
+    queryFn: getMovies,
+    enabled: false
+  });
 
-  const changeThemeClick = () => {
-    dispatch(changePalette(paletteMode == "light" ? "dark" : "light"));
+  const changeThemeClick = async () => {
+    await refetch();
+    setAppConfig({paletteMode: paletteMode === 'dark' ? 'light' : 'dark'});
   }
+
 
   return (
       <>

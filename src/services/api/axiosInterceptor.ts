@@ -3,14 +3,13 @@ import { RequestConfig } from "@models/dataModel";
 import { RequestsConfig } from "@config/requestsConfig";
 import { globalConfig } from "@config/globalConfig";
 import { authService } from "@services/authService";
-import { dispatch } from "@redux/store/rootStore";
-import { toggleLoading } from "@redux/slices/loadingSlice";
+import { globalStateService } from "@services/globalStateService";
 
 const requestsQueue: AxiosRequestConfig[] = [];
 const loadingRequestsCounter = new Map<string, number>();
 
 const showSuccessToast = (message: string) => {
-  console.log('SUCCESS', message)
+  console.log('SUCCESS', message);
   // overlayService.showToast({
   //   severity: 'success',
   //   detail: message ?? 'با موفقیت انجام شد'
@@ -26,9 +25,10 @@ const showFailureToast = (message: string) => {
 }
 
 const getRequestConfig = (config: AxiosRequestConfig) => {
-  const {pathname} = getUrlParts(config.url!);
+  const url = config.url.includes('http') ? config.url : `${config.baseURL}${config.url}`;
+  const {pathname} = getUrlParts(url!);
   const requestPathMatch = ({pathTemplate, isCustomApi}: RequestConfig) => {
-    const testCase = isCustomApi ? config.url : pathname;
+    const testCase = isCustomApi ? url : pathname;
     if (pathTemplate instanceof RegExp) {
       return pathTemplate.test(testCase);
     } else if (pathTemplate!.includes('*')) {
@@ -66,8 +66,7 @@ const removeRequestFromQueue = (config: InternalAxiosRequestConfig) => {
   if (i >= 0) {
     requestsQueue.splice(i, 1);
   }
-
-  dispatch(toggleLoading(requestsQueue.length > 0));
+  globalStateService.set(prev => ({...prev, loading: requestsQueue.length > 0}))
 }
 
 const getRequestProp = (config: InternalAxiosRequestConfig, response: AxiosResponse | null, prop: keyof RequestConfig) => {
@@ -118,7 +117,7 @@ const handleHttpRequest = (config: InternalAxiosRequestConfig) => {
     loadingRequestsCounter.set(pathTemplate, (loadingRequestsCounter.get(pathTemplate) ?? 0) + 1);
     if (!loadingOnlyOnce || (loadingOnlyOnce && loadingRequestsCounter.get(pathTemplate) == 1)) {
       requestsQueue.push(config);
-      dispatch(toggleLoading(true))
+      globalStateService.set(prev => ({...prev, loading: true}))
     }
   }
   return config;
