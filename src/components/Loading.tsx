@@ -1,8 +1,8 @@
-import { useLoading } from "@hooks/useLoading";
 import { useMemo } from "react";
+import { useLoading } from "@hooks/useLoading";
 
 export const Loading = () => {
-  const {value} = useLoading();
+  const loading = useLoading();
 
   const styles = useMemo(() => ({
     width: '100%',
@@ -17,10 +17,10 @@ export const Loading = () => {
     justifyContent: 'center',
     backgroundColor: '#ffffff',
     transition: 'all 0.5s',
-    visibility: value ? 'visible' : 'hidden',
-    opacity: value ? 1 : 0,
+    visibility: loading ? 'visible' : 'hidden',
+    opacity: loading ? 1 : 0,
     zIndex: 900000000000000,
-  }), [value])
+  }), [loading])
 
   return (
       <div style={styles}>

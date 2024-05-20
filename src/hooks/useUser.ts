@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
-import { selectUser } from "@redux/selectors/userSelector";
+import { globalStateService } from "@services/globalStateService";
 
 export const useUser = () => {
-  return useSelector(selectUser);
+  return globalStateService.useSelector(state => state.user);
 }

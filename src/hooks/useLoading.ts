@@ -1,6 +1,5 @@
-import { useSelector } from "react-redux";
-import { selectLoading } from "@redux/selectors/loadingSelector";
+import { globalStateService } from "@services/globalStateService";
 
 export const useLoading = () => {
-  return useSelector(selectLoading);
+  return globalStateService.useSelector(state => state.loading);
 }

@@ -1,6 +1,12 @@
-import { useSelector } from "react-redux";
-import { selectApp } from "@redux/selectors/appSelector";
+import { globalStateService } from "@services/globalStateService";
+import { AppState } from "@models/dataModel";
 
 export const useApp = () => {
-  return useSelector(selectApp);
+  const [state, setGlobalState] = globalStateService.use();
+  return {
+    ...state.app,
+    setAppConfig: (config: Partial<AppState>) => {
+      setGlobalState(prev => ({...prev, app: {...prev.app, ...config}}))
+    }
+  }
 }

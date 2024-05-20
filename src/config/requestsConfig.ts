@@ -13,7 +13,6 @@ export const RequestsConfig: RequestConfig[] = [
       return 'با موفقیت شکست خورد'
     },
     loading: true,
-    catch: true,
     isCustomApi: false
   },
   {
@@ -24,7 +23,6 @@ export const RequestsConfig: RequestConfig[] = [
     },
     failureMessage: null,
     loading: true,
-    catch: false,
     isCustomApi: true // when set to true, pathTemplate compared with complete request url with its params, otherwise compared with endpoint
   },
 ];
