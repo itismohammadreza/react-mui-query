@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import { Direction, PaletteMode } from "@mui/material";
 import { Locale } from "@models/theme";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { UseFormProps } from "react-hook-form";
 
 export type SafeAny = any;
 
@@ -42,3 +43,9 @@ export interface RootState {
 }
 
 export type WithChildren<T = any> = { children: ReactNode; } & T;
+
+export interface FormHandlerProps<T> extends UseFormProps {
+  children: ReactElement | ((args: SafeAny) => ReactElement);
+  onSubmit: (data: T) => SafeAny;
+  formId?: string;
+}
