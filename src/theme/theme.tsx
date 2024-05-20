@@ -7,34 +7,35 @@ import { appFonts, typography } from './overrides/typography';
 import { WithChildren } from "@models/dataModel";
 import * as muiLocales from "@mui/material/locale";
 import { scrollbar } from "@theme/overrides/scrollbar";
+import { useApp } from "@hooks/useApp.ts";
 
 export const locales = muiLocales;
 
 export const ThemeProvider = ({children}: WithChildren) => {
-  // const {paletteMode, direction, locale} = useApp();
-const theme = {}
-  // const theme = useMemo(() =>
-  //         createTheme({
-  //           palette: palette[paletteMode],
-  //           direction,
-  //           typography
-  //         }, locales[locale]),
-  //     [locale, paletteMode, direction]);
+  const {paletteMode, direction, locale} = useApp();
 
-  // theme.components = {
-  //   MuiCssBaseline: {
-  //     styleOverrides: `
-  //       ${scrollbar({thickness: '10px', radius: '10px', trackColor: '#f5f5f5', thumbColor: '#949494'})};
-  //       ${appFonts}
-  //     `
-  //   },
-  //   ...componentsOverrides(theme)
-  // };
+  const theme = useMemo(() =>
+          createTheme({
+            palette: palette[paletteMode],
+            direction,
+            typography
+          }, locales[locale]),
+      [locale, paletteMode, direction]);
 
-  // useEffect(() => {
-  //   document.documentElement.setAttribute("dir", direction);
-  //   document.documentElement.setAttribute("lang", locale.substring(0, 2));
-  // }, [direction, locale]);
+  theme.components = {
+    MuiCssBaseline: {
+      styleOverrides: `
+        ${scrollbar({thickness: '10px', radius: '10px', trackColor: '#f5f5f5', thumbColor: '#949494'})};
+        ${appFonts}
+      `
+    },
+    ...componentsOverrides(theme)
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("dir", direction);
+    document.documentElement.setAttribute("lang", locale.substring(0, 2));
+  }, [direction, locale]);
 
   return (
       <MUIThemeProvider theme={theme}>

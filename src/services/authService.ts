@@ -1,6 +1,6 @@
 import { httpService } from "@services/api/httpService";
-import { useUser } from "@hooks/useUser";
 import { redirect } from "react-router-dom";
+import { globalStateService } from "@services/globalStateService";
 
 const endpoint = "auth";
 
@@ -8,11 +8,11 @@ const hasPermission = (input: string[] | string) => {
   if (!input || !input.length) {
     return true
   }
-  const {permissions} = useUser();
+  const {user} = globalStateService.get();
   if (Array.isArray(input)) {
-    return permissions.some(p => input.includes(p))
+    return user.permissions.some(p => input.includes(p))
   }
-  return permissions.includes(input)
+  return user.permissions.includes(input)
 }
 
 const login = (data: any) => {

@@ -31,6 +31,8 @@ export interface AppState {
 export type UserState = User;
 
 export interface User {
+  name?: string;
+  permissions?: any[];
 }
 
 export interface RootState {
