@@ -8,20 +8,14 @@ import { eventBusService } from "@services/eventBusService.ts";
 const requestsQueue: AxiosRequestConfig[] = [];
 const loadingRequestsCounter = new Map<string, number>();
 
-const showSuccessToast = (message: string) => {
-  console.log('SUCCESS', message);
-  // overlayService.showToast({
-  //   severity: 'success',
-  //   detail: message ?? 'با موفقیت انجام شد'
-  // });
+const showSuccessToast = (text: string) => {
+  const message = text ?? 'با موفقیت انجام شد';
+  eventBusService.emit("showToast", {message});
 }
 
-const showFailureToast = (message: string) => {
-  console.log('FAIL', message)
-  // overlayService.showToast({
-  //   severity: 'error',
-  //   detail: message ?? 'خطایی رخ داده است'
-  // });
+const showFailureToast = (text: string) => {
+  const message = text ?? 'خطایی رخ داده است';
+  eventBusService.emit("showToast", {message});
 }
 
 const getRequestConfig = (config: AxiosRequestConfig) => {
