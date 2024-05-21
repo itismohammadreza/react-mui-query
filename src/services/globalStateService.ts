@@ -4,6 +4,5 @@ import { globalConfig } from "@config/globalConfig";
 
 export const globalStateService = globalState<RootState>({
   app: globalConfig,
-  loading: false,
   user: {}
 });

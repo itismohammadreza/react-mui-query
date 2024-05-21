@@ -3,7 +3,7 @@ import { RequestConfig } from "@models/dataModel";
 import { RequestsConfig } from "@config/requestsConfig";
 import { globalConfig } from "@config/globalConfig";
 import { authService } from "@services/authService";
-import { globalStateService } from "@services/globalStateService";
+import { eventBusService } from "@services/eventBusService.ts";
 
 const requestsQueue: AxiosRequestConfig[] = [];
 const loadingRequestsCounter = new Map<string, number>();
@@ -66,7 +66,7 @@ const removeRequestFromQueue = (config: InternalAxiosRequestConfig) => {
   if (i >= 0) {
     requestsQueue.splice(i, 1);
   }
-  globalStateService.set(prev => ({...prev, loading: requestsQueue.length > 0}))
+  eventBusService.emit("loading", requestsQueue.length > 0);
 }
 
 const getRequestProp = (config: InternalAxiosRequestConfig, response: AxiosResponse | null, prop: keyof RequestConfig) => {
@@ -117,7 +117,7 @@ const handleHttpRequest = (config: InternalAxiosRequestConfig) => {
     loadingRequestsCounter.set(pathTemplate, (loadingRequestsCounter.get(pathTemplate) ?? 0) + 1);
     if (!loadingOnlyOnce || (loadingOnlyOnce && loadingRequestsCounter.get(pathTemplate) == 1)) {
       requestsQueue.push(config);
-      globalStateService.set(prev => ({...prev, loading: true}))
+      eventBusService.emit("loading", true);
     }
   }
   return config;

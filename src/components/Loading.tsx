@@ -1,8 +1,14 @@
-import { useMemo } from "react";
-import { useLoading } from "@hooks/useLoading";
+import { useEffect, useMemo, useState } from "react";
+import { eventBusService } from "@services/eventBusService.ts";
 
 export const Loading = () => {
-  const loading = useLoading();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    eventBusService.on("loading", loading => {
+      setLoading(loading);
+    })
+  }, [])
 
   const styles = useMemo(() => ({
     width: '100%',
