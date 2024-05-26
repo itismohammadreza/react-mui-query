@@ -15,3 +15,10 @@ export const addMovie = (movie: any) => {
 export const editMovie = (movie: any) => {
   return httpService.put(`/movies/${movie.id}`, movie);
 }
+
+export const dataService = {
+  getMovies,
+  getMovie,
+  addMovie,
+  editMovie,
+}
