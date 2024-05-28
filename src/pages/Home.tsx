@@ -2,14 +2,14 @@ import { useLocales } from "@hooks/useLocales";
 import { Button } from "@mui/material";
 import { useApp } from "@hooks/useApp";
 import { useQuery } from "@tanstack/react-query";
-import { getMovies } from "@services/dataService";
+import { dataService } from "@services/dataService";
 
 export const Home = () => {
   const {t, changeLocale, currentLocale} = useLocales();
   const {paletteMode, setAppConfig} = useApp();
   const {data, isLoading, refetch} = useQuery({
     queryKey: ["data"],
-    queryFn: getMovies,
+    queryFn: dataService.getMovies,
     enabled: false
   });
 
@@ -17,7 +17,6 @@ export const Home = () => {
     await refetch();
     setAppConfig({paletteMode: paletteMode === 'dark' ? 'light' : 'dark'});
   }
-
 
   return (
       <>
