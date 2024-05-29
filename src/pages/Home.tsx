@@ -27,7 +27,7 @@ export const Home = () => {
                 onClick={() => changeLocale(currentLocale == "faIR" ? "enUS" : "faIR")}>
           {currentLocale}
         </Button>
-        <h2>{t('demo.title')}</h2>
+        <h2>{t('title')}</h2>
         تست فارسی 123
       </>
   )

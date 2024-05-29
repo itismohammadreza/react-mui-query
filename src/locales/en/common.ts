@@ -1,7 +1,8 @@
 const en = {
-  demo: {
-    title: "English",
-  }
+  title: "English",
+  home: 'Home',
+  login: 'Login',
+  register: 'Register',
 };
 
 export default en;

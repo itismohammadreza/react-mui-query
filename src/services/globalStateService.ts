@@ -1,4 +1,4 @@
-import { globalState } from "@root/utils/globalState";
+import { globalState } from "@utils/globalState";
 import { RootState } from "@models/dataModel";
 import { globalConfig } from "@config/globalConfig";
 

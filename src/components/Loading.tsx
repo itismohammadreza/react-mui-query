@@ -5,8 +5,8 @@ export const Loading = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    eventBusService.on("loading", loading => {
-      setLoading(loading);
+    eventBusService.on("loading", value => {
+      setLoading(value);
     })
   }, [])
 

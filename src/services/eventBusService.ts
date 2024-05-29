@@ -1,3 +1,3 @@
-import { EventBus } from "@root/utils/eventBus";
+import { EventBus } from "@utils/eventBus";
 
 export const eventBusService = EventBus();

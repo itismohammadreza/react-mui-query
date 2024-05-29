@@ -1,7 +1,8 @@
 const fa = {
-  demo: {
-    title: "Persian",
-  }
+  title: "فارسی",
+  home: 'خانه',
+  login: 'ورود',
+  register: 'ثبتنام',
 };
 
 export default fa;
