@@ -19,7 +19,7 @@ export const Toast = () => {
 
   useEffect(() => {
     eventBusService.on("showToast", toast => {
-      setToast(toast)
+      setToast(toast);
       setOpen(true);
     })
   }, [])

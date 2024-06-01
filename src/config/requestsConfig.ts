@@ -1,6 +1,6 @@
-import { RequestConfig } from "@models/dataModel";
+import { RequestConfig } from "@models/common";
 
-export const RequestsConfig: RequestConfig[] = [
+export const RequestsConfig: Readonly<RequestConfig[]> = [
   // {pathTemplate: /photos/g},
   // {pathTemplate: 'your/*/custom/*/path/*/template'},
   {

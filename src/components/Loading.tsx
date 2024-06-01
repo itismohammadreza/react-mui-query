@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { eventBusService } from "@services/eventBusService.ts";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
+import { eventBusService } from "@services/eventBusService";
 
 export const Loading = () => {
   const [loading, setLoading] = useState(false);
@@ -10,7 +10,7 @@ export const Loading = () => {
     })
   }, [])
 
-  const styles = useMemo(() => ({
+  const styles = useMemo<CSSProperties>(() => ({
     width: '100%',
     height: '100vh',
     position: 'fixed',

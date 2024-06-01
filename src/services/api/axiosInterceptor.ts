@@ -1,9 +1,9 @@
 import { Axios, AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
-import { RequestConfig } from "@models/dataModel";
+import { RequestConfig } from "@models/common";
 import { RequestsConfig } from "@config/requestsConfig";
 import { globalConfig } from "@config/globalConfig";
 import { authService } from "@services/authService";
-import { eventBusService } from "@services/eventBusService.ts";
+import { eventBusService } from "@services/eventBusService";
 
 const requestsQueue: AxiosRequestConfig[] = [];
 const loadingRequestsCounter = new Map<string, number>();
@@ -19,7 +19,7 @@ const showFailureToast = (text: string) => {
 }
 
 const getRequestConfig = (config: AxiosRequestConfig) => {
-  const url = config.url.includes('http') ? config.url : `${config.baseURL}${config.url}`;
+  const url = config.url?.includes('http') ? config.url : `${config.baseURL}${config.url}`;
   const {pathname} = getUrlParts(url!);
   const requestPathMatch = ({pathTemplate, isCustomApi}: RequestConfig) => {
     const testCase = isCustomApi ? url : pathname;

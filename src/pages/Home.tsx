@@ -3,8 +3,9 @@ import { Button } from "@mui/material";
 import { useApp } from "@hooks/useApp";
 import { useQuery } from "@tanstack/react-query";
 import { dataService } from "@services/dataService";
+import { Link } from "react-router-dom";
 
-export const Home = () => {
+const Home = () => {
   const {t, changeLocale, currentLocale} = useLocales();
   const {paletteMode, setAppConfig} = useApp();
   const {data, isLoading, refetch} = useQuery({
@@ -20,6 +21,8 @@ export const Home = () => {
 
   return (
       <>
+        <Link to="/auth/login">Login</Link>
+        <Link to="/about">About</Link>
         <Button variant="contained" onClick={changeThemeClick}>
           {paletteMode}
         </Button>
@@ -32,3 +35,5 @@ export const Home = () => {
       </>
   )
 }
+
+export default Home;

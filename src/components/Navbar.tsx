@@ -14,9 +14,9 @@ import {
   Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { WithChildren } from "@models/dataModel";
-import Link from "next/link";
+import { WithChildren } from "@models/common";
 import { useLocales } from "@hooks/useLocales";
+import { Link } from "react-router-dom";
 
 interface NavbarProps extends WithChildren {
   window?: () => Window;
@@ -49,7 +49,7 @@ export const Navbar = (props: NavbarProps) => {
         {
           navItems.map(item => (
               <ListItem key={item.text} disablePadding>
-                <ListItemButton component="a" href={item.href} sx={{textAlign: 'center'}}>
+                <ListItemButton component={Link} href={item.href} sx={{textAlign: 'center'}}>
                   <ListItemText primary={item.text}/>
                 </ListItemButton>
               </ListItem>

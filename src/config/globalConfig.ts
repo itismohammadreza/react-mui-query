@@ -1,4 +1,4 @@
-import { AppState } from "@models/dataModel";
+import { AppState } from "@models/common";
 
 export const globalConfig: Readonly<AppState> = {
   paletteMode: "light",
