@@ -1,51 +1,64 @@
 import { LoadingButton } from "@mui/lab";
-import TextFieldElement from "@components/forms/TextFieldElement";
-import { FormContainer } from "@components/forms/FormContainer";
-import CheckboxElement from "@components/forms/CheckboxElement";
-import { useQuery } from "@tanstack/react-query";
-import { dataService } from "@services/dataService";
+import { useMutation } from "@tanstack/react-query";
+import { authService } from "@services/authService";
+import { Container, Grid, Typography } from "@mui/material";
+import { FormElements } from "@components/forms/FormElements";
+import { Link, useNavigate } from "react-router-dom";
 
-export const Login = () => {
-  const {data, refetch, isFetching} = useQuery({
-    queryKey: ["Unique Key"],
-    queryFn: () => dataService.getMovies(),
-    enabled: false
+const Login = () => {
+  const navigate = useNavigate();
+
+  const {isPending, mutateAsync: login} = useMutation({
+    mutationFn: (value) => authService.login(value)
   });
 
-  const login = async (value: any) => {
-    await refetch()
-    console.log(value)
+  const onSubmit = async (value: any) => {
+    try {
+      const res = await login(value);
+      localStorage.setItem('token', res.token);
+      navigate('/');
+    } catch {
+    }
   }
-  const onError = (error: any) => {
-    console.log(error)
-  }
-
 
   return (
-      <div>
-        Login
-        <FormContainer>
-          <TextFieldElement
-              label="Error"
-              name="ali"
-              onChange={v => console.log(v)}/>
-        </FormContainer>
-        <FormContainer defaultValues={{firstName: 'sss'}} onError={onError} onSuccess={login}>
-          <>
-            <TextFieldElement
-                label="Error"
-                name="firstName"
-                parseError={(x) => <span>{x.message + '2'}</span>}
-                rules={{required: 'is required', minLength: {value: 3, message: 'min length'}}}/>
-            <CheckboxElement
-                label="Error"
-                name="lastName"
-                rules={{required: 'is required'}}/>
-            <LoadingButton loading={isFetching} type="submit" variant="outlined">
-              Submit
-            </LoadingButton>
-          </>
-        </FormContainer>
-      </div>
+      <FormElements.Container onSuccess={onSubmit}>
+        <Container component="main" maxWidth="xs" sx={{marginTop: 8}}>
+          <Typography component="h1" marginBottom={2} variant="h5" textAlign="center"> Sign in </Typography>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <FormElements.TextField
+                  fullWidth
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  rules={{required: 'Required'}}/>
+            </Grid>
+            <Grid item xs={12}>
+              <FormElements.TextField
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  autoComplete="current-password"
+                  rules={{required: 'Required'}}/>
+              <FormElements.Checkbox name="rememberMe" label="Remember me"/>
+            </Grid>
+          </Grid>
+          <LoadingButton fullWidth sx={{mt: 3, mb: 2}} loading={isPending} type="submit" variant="contained">
+            Sign In
+          </LoadingButton>
+          <Grid container>
+            <Grid item xs>
+              <Link to="/auth/forget-password" variant="body2"> Forgot password? </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/auth/register" variant="body2"> Don't have an account? Sign Up </Link>
+            </Grid>
+          </Grid>
+        </Container>
+      </FormElements.Container>
   )
 }
+
+export default Login;
