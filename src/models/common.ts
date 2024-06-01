@@ -1,8 +1,10 @@
-import { ReactElement, ReactNode } from "react";
-import { Direction, PaletteMode } from "@mui/material";
-import { Locale } from "@models/theme";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { UseFormProps } from "react-hook-form";
+import { Direction, PaletteMode, SnackbarProps } from "@mui/material";
+import { Locale } from "@models/theme";
+import { ReactNode } from "react";
+import { UserState } from "@models/business";
+
+export type Nullable<T = void> = T | null | undefined;
 
 export type SafeAny = any;
 
@@ -20,6 +22,11 @@ export interface RequestConfig {
   timeout?: number | 'none' | ((request: AxiosRequestConfig<any>) => number | 'none');
 }
 
+export type Events = {
+  showToast: SnackbarProps;
+  loading: boolean;
+}
+
 export interface AppState {
   paletteMode: PaletteMode;
   direction: Direction;
@@ -29,22 +36,9 @@ export interface AppState {
   requestTimeout: number;
 }
 
-export type UserState = User;
-
-export interface User {
-  name?: string;
-  permissions?: any[];
-}
-
 export interface RootState {
-  user: UserState;
+  user: Partial<UserState>;
   app: AppState;
 }
 
 export type WithChildren<T = any> = { children: ReactNode; } & T;
-
-export interface FormHandlerProps<T> extends UseFormProps {
-  children: ReactElement | ((args: SafeAny) => ReactElement);
-  onSubmit: (data: T) => SafeAny;
-  formId?: string;
-}

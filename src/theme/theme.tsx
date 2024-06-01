@@ -4,10 +4,10 @@ import { componentsOverrides } from "@theme/overrides/componentsOverrides";
 import { ThemeProvider as MUIThemeProvider } from "@mui/material/styles";
 import { palette } from './overrides/palette';
 import { appFonts, typography } from './overrides/typography';
-import { WithChildren } from "@models/dataModel";
+import { WithChildren } from "@models/common";
 import * as muiLocales from "@mui/material/locale";
 import { scrollbar } from "@theme/overrides/scrollbar";
-import { useApp } from "@hooks/useApp.ts";
+import { useApp } from "@hooks/useApp";
 
 export const locales = muiLocales;
 

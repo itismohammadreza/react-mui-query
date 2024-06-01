@@ -2,7 +2,7 @@ import { createBrowserRouter, LoaderFunctionArgs, redirect } from "react-router-
 import { Home } from "@pages/Home";
 import { Login } from "@pages/Login";
 import { Register } from "@pages/Register";
-import { globalStateService } from "@services/globalStateService.ts";
+import { globalStateService } from "@services/globalStateService";
 
 const protectedLoader = ({request}: LoaderFunctionArgs) => {
   const {user} = globalStateService.get();
@@ -34,7 +34,6 @@ export const router = createBrowserRouter([
         path: "",
         element: <Home/>,
       },
-      // sample for a protected page
       {
         path: "protected",
         loader: protectedLoader,
