@@ -29,6 +29,7 @@ export const Navbar = (props: NavbarProps) => {
   const appTitle = t("appTitle")
   const navItems = [
     {text: t('home'), href: '/'},
+    {text: t('about'), href: '/about'},
     {text: t('login'), href: '/auth/login'},
     {text: t('register'), href: '/auth/register'},
   ];

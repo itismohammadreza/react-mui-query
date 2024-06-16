@@ -37,7 +37,7 @@ export interface AppState {
 }
 
 export interface RootState {
-  user: Partial<UserState>;
+  user: Nullable<UserState>;
   app: AppState;
 }
 

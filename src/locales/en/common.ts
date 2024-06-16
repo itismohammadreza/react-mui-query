@@ -1,6 +1,7 @@
 const en = {
-  title: "English",
+  locale: "English",
   home: 'Home',
+  about: 'About',
   login: 'Login',
   register: 'Register',
 };

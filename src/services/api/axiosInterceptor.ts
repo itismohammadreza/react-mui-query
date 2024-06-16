@@ -19,6 +19,9 @@ const showFailureToast = (text: string) => {
 }
 
 const getRequestConfig = (config: AxiosRequestConfig) => {
+  if (!config) {
+    return;
+  }
   const url = config.url?.includes('http') ? config.url : `${config.baseURL}${config.url}`;
   const {pathname} = getUrlParts(url!);
   const requestPathMatch = ({pathTemplate, isCustomApi}: RequestConfig) => {

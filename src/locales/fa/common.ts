@@ -1,6 +1,7 @@
 const fa = {
-  title: "فارسی",
+  locale: "فارسی",
   home: 'خانه',
+  about: 'درباره',
   login: 'ورود',
   register: 'ثبتنام',
 };
