@@ -14,8 +14,8 @@ export const Login = () => {
     mutationFn: async (value: User) => {
       try {
         const {data} = await dataService.login(value);
-        const {data: user} = await dataService.getProfile(data.access_token);
         localStorage.setItem('token', data.access_token);
+        const {data: user} = await dataService.getProfile();
         globalStateService.set(prev => ({...prev, user}));
         return user;
       } catch {
@@ -23,7 +23,7 @@ export const Login = () => {
     }
   });
 
-  const onSubmit = async (value: any) => {
+  const onSubmit = async (value: User) => {
     try {
       await login(value);
       navigate('/');

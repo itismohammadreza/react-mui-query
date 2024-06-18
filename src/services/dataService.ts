@@ -26,8 +26,8 @@ const register = (data: User) => {
   return httpService.post('auth/register', data);
 }
 
-const getProfile = (token: string) => {
-  return httpService.get<User>('auth/profile', {headers: {Authorization: `Bearer ${token}`}});
+const getProfile = () => {
+  return httpService.get<User>('auth/profile');
 }
 
 const hasPermission = (input: string[] | string) => {
