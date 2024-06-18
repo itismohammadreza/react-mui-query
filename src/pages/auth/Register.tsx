@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query";
 import { LoadingButton } from "@mui/lab";
 import { FormElements } from "@components/forms/FormElements";
 import { Link, useNavigate } from "react-router-dom";
-import { dataService } from "@services/dataService.ts";
-import { User } from "@models/business.ts";
+import { dataService } from "@services/dataService";
+import { User } from "@models/business";
 
 export const Register = () => {
   const navigate = useNavigate();

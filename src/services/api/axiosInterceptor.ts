@@ -3,7 +3,7 @@ import { RequestConfig } from "@models/common";
 import { RequestsConfig } from "@config/requestsConfig";
 import { globalConfig } from "@config/globalConfig";
 import { eventBusService } from "@services/eventBusService";
-import { dataService } from "@services/dataService.ts";
+import { dataService } from "@services/dataService";
 
 const requestsQueue: AxiosRequestConfig[] = [];
 const loadingRequestsCounter = new Map<string, number>();

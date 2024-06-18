@@ -3,8 +3,8 @@ import { Login } from "@pages/auth/Login";
 import { Register } from "@pages/auth/Register";
 import { Main } from "@pages/main/Main";
 import { Home } from "@pages/main/Home";
-import { About } from "@pages/main/About.tsx";
-import { globalStateService } from "@services/globalStateService.ts";
+import { About } from "@pages/main/About";
+import { globalStateService } from "@services/globalStateService";
 
 const protectedLoader = ({request}: LoaderFunctionArgs) => {
   const {user} = globalStateService.get();
