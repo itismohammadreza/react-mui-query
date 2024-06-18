@@ -12,7 +12,7 @@ const get = <T>(endpoint: string, config?: RequestConfig) =>
       method: "get",
       url: endpoint,
       ...config,
-    }).then(res => res?.data);
+    });
 
 const post = <T>(endpoint: string, data: any, config?: RequestConfig) =>
     request<T>({
@@ -20,7 +20,7 @@ const post = <T>(endpoint: string, data: any, config?: RequestConfig) =>
       url: endpoint,
       data,
       ...config,
-    }).then(res => res?.data);
+    });
 
 const put = <T>(endpoint: string, data: any, config?: RequestConfig) =>
     request<T>({
@@ -28,7 +28,7 @@ const put = <T>(endpoint: string, data: any, config?: RequestConfig) =>
       url: endpoint,
       data,
       ...config,
-    }).then(res => res?.data);
+    });
 
 const patch = <T>(endpoint: string, data: any, config?: RequestConfig) =>
     request<T>({
@@ -36,14 +36,14 @@ const patch = <T>(endpoint: string, data: any, config?: RequestConfig) =>
       url: endpoint,
       data,
       ...config,
-    }).then(res => res?.data);
+    });
 
 const del = <T>(endpoint: string, config?: RequestConfig) =>
     request<T>({
       method: "delete",
       url: endpoint,
       ...config,
-    }).then(res => res?.data);
+    });
 
 const request = <T>(config: AxiosRequestConfig) => axios<T>(config);
 

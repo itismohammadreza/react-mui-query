@@ -2,8 +2,8 @@ import { Axios, AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequ
 import { RequestConfig } from "@models/common";
 import { RequestsConfig } from "@config/requestsConfig";
 import { globalConfig } from "@config/globalConfig";
-import { authService } from "@services/authService";
 import { eventBusService } from "@services/eventBusService";
+import { dataService } from "@services/dataService.ts";
 
 const requestsQueue: AxiosRequestConfig[] = [];
 const loadingRequestsCounter = new Map<string, number>();
@@ -138,7 +138,7 @@ const handleHttpError = (error: AxiosError) => {
     showFailureToast(failureMessage);
   }
   if (error.status === 403) {
-    authService.logout();
+    dataService.logout();
   }
   removeRequestFromQueue(config!);
 }

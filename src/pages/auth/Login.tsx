@@ -1,21 +1,31 @@
 import { LoadingButton } from "@mui/lab";
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "@services/authService";
 import { Container, Grid, Typography } from "@mui/material";
 import { FormElements } from "@components/forms/FormElements";
 import { Link, useNavigate } from "react-router-dom";
+import { dataService } from "@services/dataService";
+import { User } from "@models/business";
+import { globalStateService } from "@services/globalStateService";
 
-const Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
 
   const {isPending, mutateAsync: login} = useMutation({
-    mutationFn: (value) => authService.login(value)
+    mutationFn: async (value: User) => {
+      try {
+        const {data} = await dataService.login(value);
+        const {data: user} = await dataService.getProfile(data.access_token);
+        localStorage.setItem('token', data.access_token);
+        globalStateService.set(prev => ({...prev, user}));
+        return user;
+      } catch {
+      }
+    }
   });
 
   const onSubmit = async (value: any) => {
     try {
-      const res = await login(value);
-      localStorage.setItem('token', res.token);
+      await login(value);
       navigate('/');
     } catch {
     }
@@ -50,15 +60,13 @@ const Login = () => {
           </LoadingButton>
           <Grid container>
             <Grid item xs>
-              <Link to="/auth/forget-password" variant="body2"> Forgot password? </Link>
+              <Link to="/auth/forget-password"> Forgot password? </Link>
             </Grid>
             <Grid item>
-              <Link to="/auth/register" variant="body2"> Don't have an account? Sign Up </Link>
+              <Link to="/auth/register"> Don't have an account? Sign Up </Link>
             </Grid>
           </Grid>
         </Container>
       </FormElements.Container>
   )
 }
-
-export default Login;

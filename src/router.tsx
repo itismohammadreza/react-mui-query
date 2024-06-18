@@ -1,12 +1,14 @@
-import { createBrowserRouter, LoaderFunctionArgs, redirect } from "react-router-dom";
-import { Home } from "@pages/Home";
-import { Login } from "@pages/Login";
-import { Register } from "@pages/Register";
-import { globalStateService } from "@services/globalStateService";
+import { createBrowserRouter, LoaderFunctionArgs, redirect, } from "react-router-dom";
+import { Login } from "@pages/auth/Login";
+import { Register } from "@pages/auth/Register";
+import { Main } from "@pages/main/Main";
+import { Home } from "@pages/main/Home";
+import { About } from "@pages/main/About.tsx";
+import { globalStateService } from "@services/globalStateService.ts";
 
 const protectedLoader = ({request}: LoaderFunctionArgs) => {
   const {user} = globalStateService.get();
-  if (!user.name) {
+  if (!user?.name) {
     const params = new URLSearchParams();
     params.set("return", new URL(request.url).pathname);
     return redirect("/auth/login?" + params.toString());
@@ -16,7 +18,8 @@ const protectedLoader = ({request}: LoaderFunctionArgs) => {
 
 const loginLoader = async () => {
   const {user} = globalStateService.get();
-  if (user.name) {
+  // if user exist, no need to visit login page
+  if (user?.name) {
     return redirect("/");
   }
   return null;
@@ -25,14 +28,18 @@ const loginLoader = async () => {
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <Main/>,
     loader: async () => {
-      // return logged in user data
       return {}
     },
     children: [
       {
         path: "",
         element: <Home/>,
+      },
+      {
+        path: "about",
+        element: <About/>,
       },
       {
         path: "protected",

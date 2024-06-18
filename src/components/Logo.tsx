@@ -1,5 +1,5 @@
 import { Box, BoxProps } from '@mui/material';
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 interface LogoProps extends BoxProps {
   src?: string;
@@ -22,5 +22,5 @@ export const Logo = (props: LogoProps) => {
     return <>{logo}</>;
   }
 
-  return <Link href={href || '/'}>{logo}</Link>;
+  return <Link to={href || '/'}>{logo}</Link>;
 }

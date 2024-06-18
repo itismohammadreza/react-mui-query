@@ -40,7 +40,7 @@ export const Navbar = (props: NavbarProps) => {
 
   const appBarItems = (
       navItems.map(item => (
-          <Button component={Link} href={item.href} key={item.text} sx={{color: '#fff'}}>
+          <Button component={Link} to={item.href} key={item.text} sx={{color: '#fff'}}>
             {item.text}
           </Button>
       ))
@@ -50,7 +50,7 @@ export const Navbar = (props: NavbarProps) => {
         {
           navItems.map(item => (
               <ListItem key={item.text} disablePadding>
-                <ListItemButton component={Link} href={item.href} sx={{textAlign: 'center'}}>
+                <ListItemButton component={Link} to={item.href} sx={{textAlign: 'center'}}>
                   <ListItemText primary={item.text}/>
                 </ListItemButton>
               </ListItem>

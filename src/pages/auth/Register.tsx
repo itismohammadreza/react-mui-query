@@ -1,20 +1,21 @@
 import { Container, Grid, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { authService } from "@services/authService";
 import { LoadingButton } from "@mui/lab";
 import { FormElements } from "@components/forms/FormElements";
 import { Link, useNavigate } from "react-router-dom";
+import { dataService } from "@services/dataService.ts";
+import { User } from "@models/business.ts";
 
-const Register = () => {
+export const Register = () => {
   const navigate = useNavigate();
 
   const {isPending, mutateAsync: register} = useMutation({
-    mutationFn: (value) => authService.register(value)
+    mutationFn: (value: User) => dataService.register(value)
   });
 
-  const onSubmit = async (value: any) => {
+  const onSubmit = async (value: User) => {
     try {
-      const res = await register(value);
+      await register(value);
       navigate('/');
     } catch {
     }
@@ -59,12 +60,12 @@ const Register = () => {
                   rules={{required: 'Required'}}/>
             </Grid>
           </Grid>
-          <LoadingButton type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
+          <LoadingButton loading={isPending} type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 2}}>
             Sign Up
           </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link to="/auth/login" variant="body2">
+              <Link to="/auth/login">
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -73,5 +74,3 @@ const Register = () => {
       </FormElements.Container>
   )
 }
-
-export default Register;

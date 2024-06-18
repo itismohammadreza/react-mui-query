@@ -1,24 +1,64 @@
 import { httpService } from "@services/api/httpService";
+import { Product, User } from "@models/business";
+import { globalStateService } from "@services/globalStateService";
 
-export const getMovies = () => {
-  return httpService.get('/movies');
+const getProducts = () => {
+  return httpService.get<Product[]>('/products');
 }
 
-export const getMovie = (id: string) => {
-  return httpService.get(`/movies/${id}`);
+const getProduct = (id: string) => {
+  return httpService.get<Product>(`/products/${id}`);
 }
 
-export const addMovie = (movie: any) => {
-  return httpService.post('/movies', movie);
+const addProduct = (product: Product) => {
+  return httpService.post<Product>('/products', product);
 }
 
-export const editMovie = (movie: any) => {
-  return httpService.put(`/movies/${movie.id}`, movie);
+const editProduct = (product: Partial<Product>) => {
+  return httpService.put<Product>(`/products/${product.id}`, product);
+}
+
+const login = (data: Partial<User>) => {
+  return httpService.post<{ access_token: string }>('auth/login', data);
+}
+
+const register = (data: User) => {
+  return httpService.post('auth/register', data);
+}
+
+const getProfile = (token: string) => {
+  return httpService.get<User>('auth/profile', {headers: {Authorization: `Bearer ${token}`}});
+}
+
+const hasPermission = (input: string[] | string) => {
+  if (!input || !input.length) {
+    return true
+  }
+  const {user} = globalStateService.get();
+  if (Array.isArray(input)) {
+    return user?.permissions?.some(p => input.includes(p))
+  }
+  return user?.permissions?.includes(input)
+}
+
+const logout = () => {
+  localStorage.removeItem('token');
+  globalStateService.set(prev => ({...prev, user: undefined}));
+}
+
+const hasToken = () => {
+  return !!localStorage.getItem('token');
 }
 
 export const dataService = {
-  getMovies,
-  getMovie,
-  addMovie,
-  editMovie,
+  getProducts,
+  getProduct,
+  addProduct,
+  editProduct,
+  hasPermission,
+  login,
+  register,
+  getProfile,
+  logout,
+  hasToken
 }
