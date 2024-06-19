@@ -2,13 +2,14 @@ import { LoadingButton } from "@mui/lab";
 import { useMutation } from "@tanstack/react-query";
 import { Container, Grid, Typography } from "@mui/material";
 import { FormElements } from "@components/forms/FormElements";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { dataService } from "@services/dataService";
 import { User } from "@models/business";
 import { globalStateService } from "@services/globalStateService";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const {isPending, mutateAsync: login} = useMutation({
     mutationFn: async (value: User) => {
@@ -26,7 +27,7 @@ export const Login = () => {
   const onSubmit = async (value: User) => {
     try {
       await login(value);
-      navigate('/');
+      navigate(searchParams.get('return') ?? '/');
     } catch {
     }
   }
