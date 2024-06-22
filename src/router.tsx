@@ -1,9 +1,11 @@
-import { createBrowserRouter, LoaderFunctionArgs, redirect, } from "react-router-dom";
+import { createBrowserRouter, LoaderFunctionArgs, redirect } from "react-router-dom";
 import { Home } from "@pages/main/Home";
 import { Login } from "@pages/auth/Login";
 import { globalStateService } from "@services/globalStateService";
 import { Main } from "@pages/main/Main";
 import { dataService } from "@services/dataService";
+import { About } from "@pages/main/About";
+import { Register } from "@pages/auth/Register";
 
 const provideUser = async () => {
   try {

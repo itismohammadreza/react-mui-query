@@ -135,7 +135,7 @@ const handleHttpError = (error: AxiosError) => {
   const failureMessage = getRequestProp(config!, response!, 'failureMessage');
 
   if (![false, undefined].includes(failureMessage)) {
-    showFailureToast(failureMessage);
+    showFailureToast(failureMessage || response?.data?.message);
   }
   if (error.status === 403) {
     dataService.logout();

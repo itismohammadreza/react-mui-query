@@ -18,11 +18,6 @@ export const Home = () => {
 
   return (
       <>
-        <Typography variant="h6" component="span"> Theme: </Typography>
-        <Button onClick={() => setAppConfig({paletteMode: paletteMode === 'dark' ? 'light' : 'dark'})}>
-          {paletteMode}
-        </Button>
-        <br/>
         <Typography variant="h6" component="span"> Locale: </Typography>
         <Button onClick={() => changeLocale(currentLocale == "faIR" ? "enUS" : "faIR")}>
           {currentLocale}

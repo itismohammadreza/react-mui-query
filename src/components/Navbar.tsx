@@ -18,6 +18,9 @@ import { useLocales } from "@hooks/useLocales";
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "@hooks/useUser";
 import { AccountCircle } from "@mui/icons-material";
+import LightModeIcon from '@mui/icons-material/LightMode';
+import ModeNightIcon from '@mui/icons-material/ModeNight';
+import { useApp } from "@hooks/useApp";
 
 interface NavbarProps extends WithChildren {
   window?: () => Window;
@@ -27,6 +30,7 @@ const drawerWidth = 240;
 
 export const Navbar = (props: NavbarProps) => {
   const {t} = useLocales();
+  const {paletteMode, setAppConfig} = useApp();
   const currentUser = useUser();
   const location = useLocation();
   const {window, children} = props;
@@ -71,6 +75,18 @@ export const Navbar = (props: NavbarProps) => {
             <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
               {t("appTitle")}
             </Typography>
+            {
+                paletteMode === 'dark' &&
+                <IconButton onClick={() => setAppConfig({paletteMode: 'light'})} size="large" color="inherit">
+                  <LightModeIcon/>
+                </IconButton>
+            }
+            {
+                paletteMode === 'light' &&
+                <IconButton onClick={() => setAppConfig({paletteMode: 'dark'})} size="large" color="inherit">
+                  <ModeNightIcon/>
+                </IconButton>
+            }
             {
                 currentUser &&
                 <IconButton size="large" color="inherit">

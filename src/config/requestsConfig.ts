@@ -4,6 +4,14 @@ export const RequestsConfig: Readonly<RequestConfig[]> = [
   // {pathTemplate: /photos/g},
   // {pathTemplate: 'your/*/custom/*/path/*/template'},
   {
+    pathTemplate: '/api/v1/login',
+    method: 'POST',
+    successMessage: false,
+    failureMessage: null,
+    loading: false,
+    isCustomApi: false
+  },
+  {
     pathTemplate: '/api/v1/products',
     method: 'GET',
     successMessage: (req, res) => {
