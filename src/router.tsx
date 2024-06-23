@@ -6,6 +6,7 @@ import { Main } from "@pages/main/Main";
 import { dataService } from "@services/dataService";
 import { About } from "@pages/main/About";
 import { Register } from "@pages/auth/Register";
+import { NotFound } from "@pages/NotFound";
 
 const provideUser = async () => {
   try {
@@ -77,5 +78,9 @@ export const router = createBrowserRouter([
         element: <Register/>,
       },
     ]
+  },
+  {
+    path: '*',
+    element: <NotFound/>
   }
 ]);
