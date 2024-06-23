@@ -21,6 +21,7 @@ import { AccountCircle } from "@mui/icons-material";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ModeNightIcon from '@mui/icons-material/ModeNight';
 import { useApp } from "@hooks/useApp";
+import RemoveIcon from '@mui/icons-material/Remove';
 
 interface NavbarProps extends WithChildren {
   window?: () => Window;
@@ -36,9 +37,9 @@ export const Navbar = (props: NavbarProps) => {
   const {window, children} = props;
   const [open, setOpen] = useState(false);
   const navItems = [
-    {text: t('home'), href: '/', icon: <MenuIcon/>},
-    {text: t('login'), href: '/auth/login', icon: <MenuIcon/>},
-    {text: t('protected'), href: '/protected', icon: <MenuIcon/>},
+    {text: t('home'), href: '/', icon: <RemoveIcon/>},
+    {text: t('login'), href: '/auth/login', icon: <RemoveIcon/>},
+    {text: t('protected'), href: '/protected', icon: <RemoveIcon/>},
   ];
 
   const handleDrawerToggle = () => {
@@ -48,7 +49,7 @@ export const Navbar = (props: NavbarProps) => {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
-      <div>
+      <>
         <Toolbar/>
         <List>
           {
@@ -62,7 +63,7 @@ export const Navbar = (props: NavbarProps) => {
             ))
           }
         </List>
-      </div>
+      </>
   );
 
   return (
@@ -72,30 +73,30 @@ export const Navbar = (props: NavbarProps) => {
             <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{mr: 2, display: {md: "none"}}}>
               <MenuIcon/>
             </IconButton>
-            <Typography variant="h6" noWrap component="div" sx={{flexGrow: 1}}>
+            <Typography variant="h6" noWrap sx={{flexGrow: 1}}>
               {t("appTitle")}
             </Typography>
             {
                 paletteMode === 'dark' &&
-                <IconButton onClick={() => setAppConfig({paletteMode: 'light'})} size="large" color="inherit">
+                <IconButton onClick={() => setAppConfig({paletteMode: 'light'})} color="inherit">
                   <LightModeIcon/>
                 </IconButton>
             }
             {
                 paletteMode === 'light' &&
-                <IconButton onClick={() => setAppConfig({paletteMode: 'dark'})} size="large" color="inherit">
+                <IconButton onClick={() => setAppConfig({paletteMode: 'dark'})} color="inherit">
                   <ModeNightIcon/>
                 </IconButton>
             }
             {
                 currentUser &&
-                <IconButton size="large" color="inherit">
+                <IconButton color="inherit">
                   <AccountCircle/>
                 </IconButton>
             }
           </Toolbar>
         </AppBar>
-        <Box component="nav" sx={{width: {md: drawerWidth}, flexShrink: {md: 0}}} aria-label="mailbox folders">
+        <Box component="nav" sx={{width: {md: drawerWidth}, flexShrink: {md: 0}}}>
           <Drawer
               container={container}
               variant="temporary"
@@ -105,7 +106,6 @@ export const Navbar = (props: NavbarProps) => {
               sx={{
                 display: {xs: "block", sm: "block", md: "none"},
                 "& .MuiDrawer-paper": {
-                  boxSizing: "border-box",
                   width: drawerWidth
                 }
               }}>
@@ -116,7 +116,6 @@ export const Navbar = (props: NavbarProps) => {
               sx={{
                 display: {xs: "none", sm: "none", md: "block"},
                 "& .MuiDrawer-paper": {
-                  boxSizing: "border-box",
                   width: drawerWidth
                 }
               }}
