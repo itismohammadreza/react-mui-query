@@ -1,6 +1,7 @@
 import { httpService } from "@services/api/httpService";
 import { Product, User } from "@models/business";
 import { globalStateService } from "@services/globalStateService";
+import { redirect } from "react-router-dom";
 
 const getProducts = () => {
   return httpService.get<Product[]>('/products');
@@ -41,9 +42,16 @@ const hasPermission = (input: string[] | string) => {
   return user?.permissions?.includes(input)
 }
 
-const logout = () => {
+const logout = (returnPath?: string) => {
+  let destination = "/auth/login";
   localStorage.removeItem('token');
   globalStateService.set(prev => ({...prev, user: undefined}));
+  if (returnPath) {
+    const params = new URLSearchParams();
+    params.set("return", returnPath);
+    destination = `${destination}?${params.toString()}`;
+  }
+  return redirect(destination);
 }
 
 const hasToken = () => {
