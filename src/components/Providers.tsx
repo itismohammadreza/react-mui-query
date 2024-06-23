@@ -8,7 +8,14 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "@root/router";
 
 export const Providers = ({children}: WithChildren) => {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: 3
+      }
+    }
+  });
 
   return (
       <QueryClientProvider client={queryClient}>
