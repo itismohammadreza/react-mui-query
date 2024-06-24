@@ -1,7 +1,6 @@
-import { createTheme, CssBaseline } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider as MUIThemeProvider } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { componentsOverrides } from "@theme/overrides/componentsOverrides";
-import { ThemeProvider as MUIThemeProvider } from "@mui/material/styles";
 import { palette } from './overrides/palette';
 import { appFonts, typography } from './overrides/typography';
 import { WithChildren } from "@models/common";
@@ -12,15 +11,14 @@ import { useApp } from "@hooks/useApp";
 export const locales = muiLocales;
 
 export const ThemeProvider = ({children}: WithChildren) => {
-  const {paletteMode, direction, locale} = useApp();
+  const {paletteMode, rtl, locale} = useApp();
 
   const theme = useMemo(() =>
-          createTheme({
-            palette: palette[paletteMode],
-            direction,
-            typography
-          }, locales[locale]),
-      [locale, paletteMode, direction]);
+      createTheme({
+        palette: palette[paletteMode],
+        direction: rtl ? 'rtl' : 'ltr',
+        typography
+      }, locales[locale]), [locale, paletteMode, rtl]);
 
   theme.components = {
     MuiCssBaseline: {
@@ -33,9 +31,9 @@ export const ThemeProvider = ({children}: WithChildren) => {
   };
 
   useEffect(() => {
-    document.documentElement.setAttribute("dir", direction);
+    document.documentElement.setAttribute("dir", rtl ? 'rtl' : 'ltr');
     document.documentElement.setAttribute("lang", locale.substring(0, 2));
-  }, [direction, locale]);
+  }, [rtl, locale]);
 
   return (
       <MUIThemeProvider theme={theme}>

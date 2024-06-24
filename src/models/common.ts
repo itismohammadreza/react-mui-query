@@ -29,7 +29,7 @@ export type Events = {
 
 export interface AppState {
   paletteMode: PaletteMode;
-  direction: Direction;
+  rtl: boolean;
   locale: Locale;
   langStorageKey: string;
   apiUrl: string;
