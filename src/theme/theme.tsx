@@ -13,12 +13,11 @@ export const locales = muiLocales;
 export const ThemeProvider = ({children}: WithChildren) => {
   const {paletteMode, rtl, locale} = useApp();
 
-  const theme = useMemo(() =>
-      createTheme({
-        palette: palette[paletteMode],
-        direction: rtl ? 'rtl' : 'ltr',
-        typography
-      }, locales[locale]), [locale, paletteMode, rtl]);
+  const theme = useMemo(() => createTheme({
+    palette: palette[paletteMode],
+    direction: rtl ? 'rtl' : 'ltr',
+    typography
+  }, locales[locale]), [locale, paletteMode, rtl]);
 
   theme.components = {
     MuiCssBaseline: {
