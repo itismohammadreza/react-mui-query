@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Direction, PaletteMode, SnackbarProps } from "@mui/material";
+import { PaletteMode, SnackbarProps } from "@mui/material";
 import { Locale } from "@models/theme";
 import { ReactNode } from "react";
 import { UserState } from "@models/business";
@@ -27,7 +27,7 @@ export type Events = {
   loading: boolean;
 }
 
-export interface AppState {
+export interface ConfigState {
   paletteMode: PaletteMode;
   rtl: boolean;
   locale: Locale;
@@ -38,7 +38,7 @@ export interface AppState {
 
 export interface RootState {
   user: Nullable<UserState>;
-  app: AppState;
+  config: ConfigState;
 }
 
 export type WithChildren<T = any> = { children: ReactNode; } & T;

@@ -6,12 +6,12 @@ import { appFonts, typography } from './overrides/typography';
 import { WithChildren } from "@models/common";
 import * as muiLocales from "@mui/material/locale";
 import { scrollbar } from "@theme/overrides/scrollbar";
-import { useApp } from "@hooks/useApp";
+import { useConfig } from "@hooks/useConfig.ts";
 
 export const locales = muiLocales;
 
 export const ThemeProvider = ({children}: WithChildren) => {
-  const {paletteMode, rtl, locale} = useApp();
+  const [{paletteMode, rtl, locale}] = useConfig();
 
   const theme = useMemo(() => createTheme({
     palette: palette[paletteMode],

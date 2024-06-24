@@ -1,6 +1,6 @@
-import { AppState } from "@models/common";
+import { ConfigState } from "@models/common";
 
-export const globalConfig: Readonly<AppState> = {
+export const globalConfig: Readonly<ConfigState> = {
   paletteMode: "light",
   rtl: false,
   locale: "faIR",
