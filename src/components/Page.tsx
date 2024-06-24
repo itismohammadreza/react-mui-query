@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
-import { WithChildren } from "@models/common";
+import { PropsWithChildren, useEffect } from 'react';
 
-export const Page = ({title, children}: WithChildren<{ title: string }>) => {
+export const Page = ({title, children}: PropsWithChildren<{ title: string }>) => {
   useEffect(() => {
     document.title = title ?? '';
   }, [title]);

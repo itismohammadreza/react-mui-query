@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { PropsWithChildren, useState } from 'react';
 import {
   AppBar,
   Box,
@@ -13,7 +13,6 @@ import {
   Typography
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { WithChildren } from "@models/common";
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "@hooks/useUser";
 import { AccountCircle } from "@mui/icons-material";
@@ -25,7 +24,7 @@ import LToRIcon from '@mui/icons-material/FormatTextdirectionLToR';
 import RToLIcon from '@mui/icons-material/FormatTextdirectionRToL';
 import { useTranslation } from "react-i18next";
 
-interface NavbarProps extends WithChildren {
+interface NavbarProps extends PropsWithChildren {
   window?: () => Window;
 }
 
