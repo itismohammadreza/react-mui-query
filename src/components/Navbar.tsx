@@ -133,7 +133,7 @@ export const Navbar = (props: NavbarProps) => {
             {drawer}
           </Drawer>
         </Box>
-        <Box component="main" sx={{flexGrow: 1, width: {md: `calc(100% - ${drawerWidth}px)`}}}>
+        <Box component="main" sx={{flexGrow: 1, width: {xs: '100%', md: `calc(100% - ${drawerWidth}px)`}}}>
           <Toolbar/>
           <Box sx={{p: 2}}>
             {children}
