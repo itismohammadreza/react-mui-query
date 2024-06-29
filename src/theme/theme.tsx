@@ -6,6 +6,7 @@ import { appFonts, typography } from './overrides/typography';
 import * as muiLocales from "@mui/material/locale";
 import { scrollbar } from "@theme/overrides/scrollbar";
 import { useConfig } from "@hooks/useConfig.ts";
+import { RtlProvider } from "@theme/RtlProvider.tsx";
 
 export const locales = muiLocales;
 
@@ -35,8 +36,10 @@ export const ThemeProvider = ({children}: PropsWithChildren) => {
 
   return (
       <MUIThemeProvider theme={theme}>
-        <CssBaseline/>
-        {children}
+        <RtlProvider>
+          <CssBaseline/>
+          {children}
+        </RtlProvider>
       </MUIThemeProvider>
   );
 }

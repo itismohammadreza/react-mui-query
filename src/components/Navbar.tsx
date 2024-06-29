@@ -62,7 +62,7 @@ export const Navbar = (props: NavbarProps) => {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
-      <>
+      <Box onClick={() => setOpen(false)}>
         <Toolbar/>
         <List>
           {
@@ -76,7 +76,7 @@ export const Navbar = (props: NavbarProps) => {
             ))
           }
         </List>
-      </>
+      </Box>
   );
 
   return (
@@ -110,6 +110,7 @@ export const Navbar = (props: NavbarProps) => {
           <Drawer
               container={container}
               variant="temporary"
+              anchor={rtl ? 'left' : 'right'}
               open={open}
               onClose={handleDrawerToggle}
               ModalProps={{keepMounted: true}}
