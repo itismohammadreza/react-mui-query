@@ -1,18 +1,16 @@
-import { createContext, PropsWithChildren, useContext } from 'react'
-import { FieldError } from 'react-hook-form'
+import { createContext, PropsWithChildren, useContext } from 'react';
+import { FieldError } from 'react-hook-form';
 
 export type FormErrorProviderProps = {
-  onError: (error: FieldError) => string | undefined
+  onError: (error: FieldError) => string | undefined;
 }
 
 const FormErrorProviderContext = createContext<FormErrorProviderProps>({
-  onError: (error) => error?.message,
+  onError: (error) => error?.message
 })
 
-export function FormErrorProvider({
-                                    onError,
-                                    children,
-                                  }: PropsWithChildren<FormErrorProviderProps>) {
+export const FormErrorProvider = (props: PropsWithChildren<FormErrorProviderProps>) => {
+  const {onError, children} = props;
   return (
       <FormErrorProviderContext.Provider value={{onError}}>
         {children}
@@ -21,6 +19,6 @@ export function FormErrorProvider({
 }
 
 export const useFormError = () => {
-  const errorCtx = useContext<FormErrorProviderProps>(FormErrorProviderContext)
-  return errorCtx?.onError
+  const errorCtx = useContext<FormErrorProviderProps>(FormErrorProviderContext);
+  return errorCtx?.onError;
 }

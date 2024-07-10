@@ -1,4 +1,4 @@
-import { TextareaAutosize, TextField, TextFieldProps, useForkRef, } from '@mui/material'
+import { TextareaAutosize, TextField, TextFieldProps, useForkRef, } from '@mui/material';
 import {
   Control,
   FieldError,
@@ -7,50 +7,38 @@ import {
   PathValue,
   useController,
   UseControllerProps,
-} from 'react-hook-form'
-import { ChangeEvent, CSSProperties, forwardRef, ReactNode, Ref, RefAttributes, } from 'react'
-import { useFormError } from './FormErrorProvider'
-import { useTransform } from './useTransform'
+} from 'react-hook-form';
+import { ChangeEvent, CSSProperties, forwardRef, ReactNode, Ref, } from 'react';
+import { useFormError } from './FormErrorProvider';
+import { useTransform } from './useTransform';
 
 export type TextareaAutosizeElementProps<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue = unknown,
 > = Omit<TextFieldProps, 'name' | 'type'> & {
-  rules?: UseControllerProps<TFieldValues, TName>['rules']
-  name: TName
-  parseError?: (error: FieldError) => ReactNode
-  control?: Control<TFieldValues>
-  resizeStyle?: CSSProperties['resize']
+  rules?: UseControllerProps<TFieldValues, TName>['rules'];
+  name: TName;
+  parseError?: (error: FieldError) => ReactNode;
+  control?: Control<TFieldValues>;
+  resizeStyle?: CSSProperties['resize'];
   transform?: {
     input?: (value: PathValue<TFieldValues, TName>) => TValue
-    output?: (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => PathValue<TFieldValues, TName>
+    output?: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => PathValue<TFieldValues, TName>
   }
 }
 
-type TextareaAutosizeElementComponent = <
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
->(
-    props: TextareaAutosizeElementProps<TFieldValues, TName, TValue> &
-        RefAttributes<HTMLDivElement>
-) => JSX.Element
-
-const TextareaAutosizeElement = forwardRef(function TextareaAutosizeElement<
+export const TextareaAutosizeElement = forwardRef(<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue = unknown,
 >(
     props: TextareaAutosizeElementProps<TFieldValues, TName, TValue>,
     ref: Ref<HTMLDivElement>
-) {
+) => {
   const {
     rules = {},
     parseError,
-    required,
     name,
     control,
     rows,
@@ -59,24 +47,16 @@ const TextareaAutosizeElement = forwardRef(function TextareaAutosizeElement<
     inputProps,
     transform,
     ...rest
-  } = props
+  } = props;
 
-  const errorMsgFn = useFormError()
-  const customErrorFn = parseError || errorMsgFn
+  const errorMsgFn = useFormError();
+  const customErrorFn = parseError || errorMsgFn;
 
-  const rulesTmp = {
-    ...rules,
-    ...(required && !rules.required && {required: 'This field is required'}),
-  }
-
-  const {
-    field,
-    fieldState: {error},
-  } = useController({
+  const {field, fieldState: {error},} = useController({
     name,
     control,
-    rules: rulesTmp,
-    disabled: rest.disabled,
+    rules,
+    disabled: rest.disabled
   })
 
   const {value, onChange} = useTransform<TFieldValues, TName, TValue>({
@@ -94,11 +74,11 @@ const TextareaAutosizeElement = forwardRef(function TextareaAutosizeElement<
               ? transform.output
               : (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                 return event.target.value as PathValue<TFieldValues, TName>
-              },
-    },
+              }
+    }
   })
 
-  const handleInputRef = useForkRef(field.ref, inputRef)
+  const handleInputRef = useForkRef(field.ref, inputRef);
 
   return (
       <TextField
@@ -112,7 +92,7 @@ const TextareaAutosizeElement = forwardRef(function TextareaAutosizeElement<
             }
           }}
           onBlur={field.onBlur}
-          required={required}
+          required={!!rules.required}
           error={!!error}
           helperText={
             error
@@ -137,5 +117,3 @@ const TextareaAutosizeElement = forwardRef(function TextareaAutosizeElement<
       />
   )
 })
-TextareaAutosizeElement.displayName = 'TextareaAutosizeElement'
-export default TextareaAutosizeElement as TextareaAutosizeElementComponent
