@@ -89,8 +89,10 @@ export const UploaderElement = <
   }, [formState.defaultValues[name]]);
 
   const handleStringValue = async (item: string) => {
+    const tempFilesToShow = [...filesToShow];
+    tempFilesToShow.push({display: item, name: '--', type: getFileType(item)});
+    setFilesToShow(tempFilesToShow);
     if (item.indexOf('base64') != -1) {
-      setFilesToShow(prev => [...prev, {display: item, name: '--', type: getFileType(item)}]);
       if (resultType == 'base64') {
         filesToEmit.current.push(item);
       } else if (resultType == 'file') {
@@ -100,7 +102,6 @@ export const UploaderElement = <
         filesToEmit.current.push(item);
       }
     } else {
-      setFilesToShow(prev => [...prev, {display: item, name: '--', type: getFileType(item)}]);
       const base64 = await utilsService.urlToBase64(item);
       if (resultType == 'base64') {
         filesToEmit.current.push(base64);
