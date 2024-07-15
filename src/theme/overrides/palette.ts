@@ -119,7 +119,7 @@ export const palette: { light: PaletteOptions, dark: PaletteOptions } = {
       strokeBg: '#EAECF0',
       lightStrokeBg: '#F3F7FE',
       primaryBg: "#BFCBE1",
-      graybg: 'F1F1F1'
+      graybg: '#F1F1F1'
     },
     action: {active: GREY[600], ...COMMON.action},
   },
@@ -133,7 +133,7 @@ export const palette: { light: PaletteOptions, dark: PaletteOptions } = {
       strokeBg: '#EAECF0',
       lightStrokeBg: '#F3F7FE',
       primaryBg: "#BFCBE1",
-      graybg: 'F1F1F1'
+      graybg: '#F1F1F1'
     },
     action: {active: GREY[500], ...COMMON.action},
   },

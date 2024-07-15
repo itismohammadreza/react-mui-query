@@ -1,34 +1,34 @@
-import { FieldPath, FieldValues, PathValue, UseControllerReturn, } from 'react-hook-form'
+import { FieldPath, FieldValues, PathValue, UseControllerReturn, } from 'react-hook-form';
 
 export type UseTransformOptions<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue = unknown,
 > = {
-  value: UseControllerReturn<TFieldValues, TName>['field']['value']
-  onChange: UseControllerReturn<TFieldValues, TName>['field']['onChange']
+  value: UseControllerReturn<TFieldValues, TName>['field']['value'];
+  onChange: UseControllerReturn<TFieldValues, TName>['field']['onChange'];
   transform?: {
-    input?: (value: PathValue<TFieldValues, TName>) => TValue
-    output?: (...event: any[]) => PathValue<TFieldValues, TName>
+    input?: (value: PathValue<TFieldValues, TName>) => TValue;
+    output?: (...event: any[]) => PathValue<TFieldValues, TName>;
   }
 }
 
 export type UseTransformReturn<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
+    TValue = unknown
 > = {
-  value: TValue
-  onChange: UseControllerReturn<TFieldValues, TName>['field']['onChange']
+  value: TValue;
+  onChange: UseControllerReturn<TFieldValues, TName>['field']['onChange'];
 }
 
-export function useTransform<
+export const useTransform = <
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
+    TValue = unknown
 >(
     options: UseTransformOptions<TFieldValues, TName, TValue>
-): UseTransformReturn<TFieldValues, TName, TValue> {
+) => {
   const value =
       typeof options.transform?.input === 'function'
           ? options.transform.input(options.value)
@@ -44,6 +44,6 @@ export function useTransform<
 
   return {
     value,
-    onChange,
+    onChange
   }
 }

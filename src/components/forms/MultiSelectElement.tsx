@@ -1,4 +1,4 @@
-import CloseIcon from '@mui/icons-material/Cancel'
+import CloseIcon from '@mui/icons-material/Cancel';
 import {
   Control,
   FieldError,
@@ -6,8 +6,8 @@ import {
   FieldValues,
   PathValue,
   useController,
-  UseControllerProps,
-} from 'react-hook-form'
+  UseControllerProps
+} from 'react-hook-form';
 import {
   Checkbox,
   Chip,
@@ -21,73 +21,59 @@ import {
   Select,
   SelectChangeEvent,
   SelectProps,
-  useForkRef,
-} from '@mui/material'
-import { useFormError } from './FormErrorProvider'
-import { forwardRef, ReactNode, Ref, RefAttributes } from 'react'
-import { useTransform } from './useTransform'
-import { propertyExists } from './utils'
+  useForkRef
+} from '@mui/material';
+import { useFormError } from './FormErrorProvider';
+import { forwardRef, ReactNode, Ref } from 'react';
+import { useTransform } from './useTransform';
+import { utilsService } from '@utils/utilsService';
 
 export type MultiSelectElementProps<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue = unknown,
 > = Omit<SelectProps, 'value'> & {
-  options: TValue[]
-  label?: string
-  itemKey?: string
-  itemValue?: string
-  itemLabel?: string
-  required?: boolean
-  rules?: UseControllerProps<TFieldValues, TName>['rules']
+  options: TValue[];
+  label?: string;
+  itemKey?: string;
+  itemValue?: string;
+  itemLabel?: string;
+  rules?: UseControllerProps<TFieldValues, TName>['rules'];
   name: TName
-  parseError?: (error: FieldError) => ReactNode
-  minWidth?: number
-  menuMaxHeight?: number
-  menuMaxWidth?: number
-  helperText?: ReactNode
-  showChips?: boolean
-  preserveOrder?: boolean
-  control?: Control<TFieldValues>
-  showCheckbox?: boolean
-  formControlProps?: Omit<FormControlProps, 'fullWidth' | 'variant'>
+  parseError?: (error: FieldError) => ReactNode;
+  minWidth?: number;
+  menuMaxHeight?: number;
+  menuMaxWidth?: number;
+  helperText?: ReactNode;
+  showChips?: boolean;
+  preserveOrder?: boolean;
+  control?: Control<TFieldValues>;
+  showCheckbox?: boolean;
+  formControlProps?: Omit<FormControlProps, 'fullWidth' | 'variant'>;
   transform?: {
-    input?: (value: PathValue<TFieldValues, TName>) => TValue[]
-    output?: (
-        event: SelectChangeEvent<unknown>,
-        child: ReactNode
-    ) => PathValue<TFieldValues, TName>
+    input?: (value: PathValue<TFieldValues, TName>) => TValue[];
+    output?: (event: SelectChangeEvent<unknown>, child: ReactNode) => PathValue<TFieldValues, TName>;
   }
-  inputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'required'>
+  inputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'required'>;
 }
 
-type MultiSelectElementComponent = <
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
+export const MultiSelectElement = forwardRef(<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
->(
-    props: MultiSelectElementProps<TFieldValues, TName, TValue> &
-        RefAttributes<HTMLDivElement>
-) => JSX.Element
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-
-const MultiSelectElement = forwardRef(function MultiSelectElement<
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
+    TValue = unknown
 >(
     props: MultiSelectElementProps<TFieldValues, TName, TValue>,
     ref: Ref<HTMLDivElement>
-) {
+) => {
   const {
     options,
     label = '',
     itemKey = 'id',
     itemValue = '',
     itemLabel = 'label',
-    required = false,
     rules = {},
     parseError,
     name,
@@ -104,33 +90,23 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
     transform,
     inputLabelProps,
     ...rest
-  } = props
+  } = props;
 
-  const errorMsgFn = useFormError()
-  const customErrorFn = parseError || errorMsgFn
+  const errorMsgFn = useFormError();
+  const customErrorFn = parseError || errorMsgFn;
 
-  const renderLabel = (item: any) =>
-      options.find((op) => {
-        const optionVal = op[itemValue || itemKey] ?? op
-        return optionVal === item
-      })?.[itemLabel] ?? item
-
-  const rulesTmp = {
-    ...rules,
-    ...(required &&
-        !rules.required && {
-          required: 'This field is required',
-        }),
+  const renderLabel = (item: any) => {
+    return options.find((op) => {
+      const optionVal = op[itemValue || itemKey] ?? op
+      return optionVal === item
+    })?.[itemLabel] ?? item
   }
 
-  const {
-    field,
-    fieldState: {error},
-  } = useController({
+  const {field, fieldState: {error}} = useController({
     name,
-    rules: rulesTmp,
+    rules: rules,
     disabled: rest.disabled,
-    control,
+    control
   })
 
   const {value, onChange} = useTransform<TFieldValues, TName, TValue[]>({
@@ -145,11 +121,11 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
                     ? value
                     : ([] as PathValue<TFieldValues, TName>)
               },
-      output: transform?.output,
-    },
+      output: transform?.output
+    }
   })
 
-  const handleInputRef = useForkRef(field.ref, inputRef)
+  const handleInputRef = useForkRef(field.ref, inputRef);
 
   const renderHelperText = error
       ? typeof customErrorFn === 'function'
@@ -168,16 +144,14 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
           fullWidth={rest.fullWidth}
           error={!!error}
           size={rest.size}
-          ref={ref}
-      >
+          ref={ref}>
         {label && (
             <InputLabel
                 {...inputLabelProps}
                 size={rest.size === 'small' ? 'small' : inputLabelProps?.size}
                 error={!!error}
                 htmlFor={rest.id || `select-multi-select-${name}`}
-                required={required}
-            >
+                required={!!rules.required}>
               {label}
             </InputLabel>
         )}
@@ -188,7 +162,7 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
             label={label || undefined}
             error={!!error}
             value={value}
-            required={required}
+            required={!!rules.required}
             onChange={onChange}
             onBlur={field.onBlur}
             MenuProps={{
@@ -200,7 +174,7 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
                     style: {
                       maxHeight: menuMaxHeight,
                       width: menuMaxWidth,
-                      ...(propertyExists(
+                      ...(utilsService.propertyExists(
                               rest.MenuProps?.slotProps?.paper,
                               'style'
                           ) &&
@@ -219,32 +193,27 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
                   : showChips
                       ? (selected) => (
                           <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                            {(preserveOrder
-                                    ? options.filter((option) =>
-                                        (selected as any[]).includes(option)
-                                    )
-                                    : (selected as any[]) || []
-                            ).map((selectedValue) => (
-                                <Chip
-                                    key={selectedValue}
-                                    label={renderLabel(selectedValue)}
-                                    style={{display: 'flex', flexWrap: 'wrap'}}
-                                    onDelete={() => {
-                                      onChange(
-                                          (Array.isArray(value) ? value : []).filter(
-                                              (i: any) => i !== selectedValue
-                                          )
-                                      )
-                                    }}
-                                    deleteIcon={
-                                      <CloseIcon
-                                          onMouseDown={(ev) => {
-                                            ev.stopPropagation()
-                                          }}
-                                      />
-                                    }
-                                />
-                            ))}
+                            {
+                              (preserveOrder
+                                      ? options.filter((option) => (selected as any[]).includes(option))
+                                      : (selected as any[]) || []
+                              ).map((selectedValue) => (
+                                  <Chip
+                                      key={selectedValue}
+                                      label={renderLabel(selectedValue)}
+                                      style={{display: 'flex', flexWrap: 'wrap'}}
+                                      onDelete={() => {
+                                        onChange((Array.isArray(value) ? value : []).filter((i: any) => i !== selectedValue))
+                                      }}
+                                      deleteIcon={
+                                        <CloseIcon
+                                            onMouseDown={(ev) => {
+                                              ev.stopPropagation()
+                                            }}
+                                        />
+                                      }/>
+                              ))
+                            }
                           </div>
                       )
                       : (selected) =>
@@ -252,8 +221,7 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
                               ? selected.map(renderLabel).join(', ')
                               : ''
             }
-            inputRef={handleInputRef}
-        >
+            inputRef={handleInputRef}>
           {options.map((item) => {
             const val: string | number = item[itemValue || itemKey] || item
             const isChecked = Array.isArray(value)
@@ -264,23 +232,19 @@ const MultiSelectElement = forwardRef(function MultiSelectElement<
                     key={val}
                     value={val}
                     sx={{
-                      fontWeight: (theme) =>
-                          isChecked
-                              ? theme.typography.fontWeightBold
-                              : theme.typography.fontWeightRegular,
-                    }}
-                >
+                      fontWeight: (theme) => isChecked ? theme.typography.fontWeightBold : theme.typography.fontWeightRegular
+                    }}>
                   {showCheckbox && <Checkbox checked={isChecked}/>}
                   <ListItemText primary={item[itemLabel] || item}/>
                 </MenuItem>
             )
           })}
         </Select>
-        {renderHelperText && (
-            <FormHelperText error={!!error}>{renderHelperText}</FormHelperText>
-        )}
+        {
+            renderHelperText && (
+                <FormHelperText error={!!error}>{renderHelperText}</FormHelperText>
+            )
+        }
       </FormControl>
   )
 })
-MultiSelectElement.displayName = 'MultiSelectElement'
-export default MultiSelectElement as MultiSelectElementComponent

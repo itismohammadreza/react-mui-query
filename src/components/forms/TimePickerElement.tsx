@@ -1,4 +1,4 @@
-import { TimePicker, TimePickerProps, TimePickerSlotProps, } from '@mui/x-date-pickers/TimePicker'
+import { TimePicker, TimePickerProps, TimePickerSlotProps, } from '@mui/x-date-pickers/TimePicker';
 import {
   Control,
   FieldError,
@@ -7,16 +7,16 @@ import {
   PathValue,
   useController,
   UseControllerProps,
-} from 'react-hook-form'
-import { TextFieldProps, useForkRef } from '@mui/material'
-import { useFormError } from './FormErrorProvider'
-import { forwardRef, ReactNode, Ref, RefAttributes } from 'react'
-import { useLocalizationContext, validateTime, } from '@mui/x-date-pickers/internals'
-import { defaultErrorMessages } from './messages/TimePicker'
-import { useTransform } from './useTransform'
-import { PickerChangeHandlerContext, TimeValidationError, } from '@mui/x-date-pickers'
-import { getTimezone } from './utils'
-import { PickerValidDate } from '@mui/x-date-pickers/models'
+} from 'react-hook-form';
+import { TextFieldProps, useForkRef } from '@mui/material';
+import { useFormError } from './FormErrorProvider';
+import { forwardRef, ReactNode, Ref } from 'react';
+import { useLocalizationContext, validateTime, } from '@mui/x-date-pickers/internals';
+import { defaultErrorMessages } from './messages/TimePicker';
+import { useTransform } from './useTransform';
+import { PickerChangeHandlerContext, TimeValidationError } from '@mui/x-date-pickers';
+import { utilsService } from '@utils/utilsService';
+import { PickerValidDate } from '@mui/x-date-pickers/models';
 
 export type TimePickerElementProps<
     TFieldValues extends FieldValues = FieldValues,
@@ -24,50 +24,33 @@ export type TimePickerElementProps<
     TValue extends PickerValidDate = PickerValidDate,
     TEnableAccessibleFieldDOMStructure extends boolean = false,
 > = Omit<TimePickerProps<TValue>, 'value' | 'renderInput'> & {
-  name: TName
-  required?: boolean
-  isDate?: boolean
-  parseError?: (error: FieldError) => ReactNode
-  rules?: UseControllerProps<TFieldValues, TName>['rules']
-  control?: Control<TFieldValues>
-  inputProps?: TextFieldProps
-  helperText?: TextFieldProps['helperText']
-  textReadOnly?: boolean
-  slotProps?: Omit<
-      TimePickerSlotProps<TValue, TEnableAccessibleFieldDOMStructure>,
-      'textField'
-  >
-  overwriteErrorMessages?: typeof defaultErrorMessages
+  name: TName;
+  isDate?: boolean;
+  parseError?: (error: FieldError) => ReactNode;
+  rules?: UseControllerProps<TFieldValues, TName>['rules'];
+  control?: Control<TFieldValues>;
+  inputProps?: TextFieldProps;
+  helperText?: TextFieldProps['helperText'];
+  textReadOnly?: boolean;
+  slotProps?: Omit<TimePickerSlotProps<TValue, TEnableAccessibleFieldDOMStructure>, 'textField'>;
+  overwriteErrorMessages?: typeof defaultErrorMessages;
   transform?: {
-    input?: (value: PathValue<TFieldValues, TName>) => TValue | null
-    output?: (
-        value: TValue | null,
-        context: PickerChangeHandlerContext<TimeValidationError>
-    ) => PathValue<TFieldValues, TName>
+    input?: (value: PathValue<TFieldValues, TName>) => TValue | null;
+    output?: (value: TValue | null, context: PickerChangeHandlerContext<TimeValidationError>) => PathValue<TFieldValues, TName>;
   }
 }
 
-type TimePickerElementComponent = <
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue extends PickerValidDate = PickerValidDate,
->(
-    props: TimePickerElementProps<TFieldValues, TName, TValue> &
-        RefAttributes<HTMLDivElement>
-) => JSX.Element
-
-const TimePickerElement = forwardRef(function TimePickerElement<
+export const TimePickerElement = forwardRef(<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue extends PickerValidDate = PickerValidDate,
 >(
     props: TimePickerElementProps<TFieldValues, TName, TValue>,
     ref: Ref<HTMLDivElement>
-) {
+) => {
   const {
     parseError,
     name,
-    required,
     rules = {},
     inputProps,
     control,
@@ -77,23 +60,19 @@ const TimePickerElement = forwardRef(function TimePickerElement<
     inputRef,
     transform,
     ...rest
-  } = props
+  } = props;
 
-  const adapter = useLocalizationContext()
+  const adapter = useLocalizationContext();
 
-  const errorMsgFn = useFormError()
-  const customErrorFn = parseError || errorMsgFn
+  const errorMsgFn = useFormError();
+  const customErrorFn = parseError || errorMsgFn;
   const errorMessages = {
     ...defaultErrorMessages,
-    ...overwriteErrorMessages,
+    ...overwriteErrorMessages
   }
 
   const rulesTmp = {
     ...rules,
-    ...(required &&
-        !rules.required && {
-          required: 'This field is required',
-        }),
     validate: {
       internal: (value: TValue | null) => {
         const internalError = validateTime({
@@ -106,7 +85,7 @@ const TimePickerElement = forwardRef(function TimePickerElement<
             rest.disableIgnoringDatePartForTimeValidation,
             disablePast: Boolean(rest.disablePast),
             disableFuture: Boolean(rest.disableFuture),
-            timezone: rest.timezone ?? getTimezone(adapter, value) ?? 'default',
+            timezone: rest.timezone ?? utilsService.getTimezone(adapter, value) ?? 'default',
           },
           value,
           adapter,
@@ -117,10 +96,7 @@ const TimePickerElement = forwardRef(function TimePickerElement<
     },
   }
 
-  const {
-    field,
-    fieldState: {error},
-  } = useController({
+  const {field, fieldState: {error},} = useController({
     name,
     control,
     rules: rulesTmp,
@@ -137,7 +113,7 @@ const TimePickerElement = forwardRef(function TimePickerElement<
               ? transform.input
               : (newValue) => {
                 return newValue && typeof newValue === 'string'
-                    ? (adapter.utils.date(newValue) as unknown as TValue) // need to see if this works for all localization adaptors
+                    ? (adapter.utils.date(newValue) as unknown as TValue)
                     : newValue
               },
       output:
@@ -147,7 +123,7 @@ const TimePickerElement = forwardRef(function TimePickerElement<
     },
   })
 
-  const handleInputRef = useForkRef(field.ref, inputRef)
+  const handleInputRef = useForkRef(field.ref, inputRef);
 
   return (
       <TimePicker
@@ -172,7 +148,7 @@ const TimePickerElement = forwardRef(function TimePickerElement<
             ...slotProps,
             textField: {
               ...inputProps,
-              required,
+              required: !!rules.required,
               error: !!error,
               helperText: error
                   ? typeof customErrorFn === 'function'
@@ -188,5 +164,3 @@ const TimePickerElement = forwardRef(function TimePickerElement<
       />
   )
 })
-TimePickerElement.displayName = 'TimePickerElement'
-export default TimePickerElement as TimePickerElementComponent

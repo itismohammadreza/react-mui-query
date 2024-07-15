@@ -5,8 +5,8 @@ import {
   FieldValues,
   PathValue,
   useController,
-  UseControllerProps,
-} from 'react-hook-form'
+  UseControllerProps
+} from 'react-hook-form';
 import {
   Checkbox,
   CheckboxProps,
@@ -15,54 +15,41 @@ import {
   FormControlLabelProps,
   FormGroup,
   FormHelperText,
-  useForkRef,
-} from '@mui/material'
-import { useFormError } from './FormErrorProvider'
-import { ChangeEvent, forwardRef, ReactNode, Ref, RefAttributes } from 'react'
-import { useTransform } from './useTransform'
+  useForkRef
+} from '@mui/material';
+import { useFormError } from './FormErrorProvider';
+import { ChangeEvent, forwardRef, ReactNode, Ref } from 'react';
+import { useTransform } from './useTransform';
 
 export type CheckboxElementProps<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue = unknown,
 > = Omit<CheckboxProps, 'name'> & {
-  rules?: UseControllerProps<TFieldValues, TName>['rules']
-  name: TName
-  parseError?: (error: FieldError) => ReactNode
-  label?: FormControlLabelProps['label']
-  helperText?: string
-  control?: Control<TFieldValues>
-  labelProps?: Omit<FormControlLabelProps, 'label' | 'control'>
+  rules?: UseControllerProps<TFieldValues, TName>['rules'];
+  name: TName;
+  parseError?: (error: FieldError) => ReactNode;
+  label?: FormControlLabelProps['label'];
+  helperText?: string;
+  control?: Control<TFieldValues>;
+  labelProps?: Omit<FormControlLabelProps, 'label' | 'control'>;
   transform?: {
-    input?: (value: PathValue<TFieldValues, TName>) => TValue
-    output?: (
-        event: ChangeEvent<HTMLInputElement>,
-        value: TValue
-    ) => PathValue<TFieldValues, TName>
+    input?: (value: PathValue<TFieldValues, TName>) => TValue;
+    output?: (event: ChangeEvent<HTMLInputElement>, value: TValue) => PathValue<TFieldValues, TName>;
   }
 }
 
-type CheckboxElementComponent = <
+export const CheckboxElement = forwardRef(<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
->(
-    props: CheckboxElementProps<TFieldValues, TName, TValue> &
-        RefAttributes<HTMLDivElement>
-) => JSX.Element
-
-const CheckboxElement = forwardRef(function CheckboxElement<
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
+    TValue = unknown
 >(
     props: CheckboxElementProps<TFieldValues, TName, TValue>,
     ref: Ref<HTMLDivElement>
-) {
+) => {
   const {
     name,
     rules = {},
-    required,
     parseError,
     label,
     control,
@@ -71,27 +58,16 @@ const CheckboxElement = forwardRef(function CheckboxElement<
     inputRef,
     transform,
     ...rest
-  } = props
+  } = props;
 
-  const errorMsgFn = useFormError()
-  const customErrorFn = parseError || errorMsgFn
+  const errorMsgFn = useFormError();
+  const customErrorFn = parseError || errorMsgFn;
 
-  const rulesTmp = {
-    ...rules,
-    ...(required &&
-        !rules.required && {
-          required: 'This field is required',
-        }),
-  }
-
-  const {
-    field,
-    fieldState: {error},
-  } = useController({
+  const {field, fieldState: {error}} = useController({
     name,
     control,
     disabled: rest.disabled,
-    rules: rulesTmp,
+    rules: rules,
   })
 
   const {value, onChange} = useTransform<TFieldValues, TName, TValue>({
@@ -99,14 +75,11 @@ const CheckboxElement = forwardRef(function CheckboxElement<
     onChange: field.onChange,
     transform: {
       input: transform?.input,
-      output:
-          typeof transform?.output === 'function'
-              ? transform?.output
-              : (_event, newValue) => newValue,
+      output: typeof transform?.output === 'function' ? transform?.output : (_event, newValue) => newValue
     },
   })
 
-  const handleInputRef = useForkRef(field.ref, inputRef)
+  const handleInputRef = useForkRef(field.ref, inputRef);
 
   const renderHelperText = error
       ? typeof customErrorFn === 'function'
@@ -115,7 +88,7 @@ const CheckboxElement = forwardRef(function CheckboxElement<
       : helperText
 
   return (
-      <FormControl required={required} error={!!error} ref={ref}>
+      <FormControl required={!!rules.required} error={!!error} ref={ref}>
         <FormGroup row>
           <FormControlLabel
               {...labelProps}
@@ -143,11 +116,11 @@ const CheckboxElement = forwardRef(function CheckboxElement<
               }
           />
         </FormGroup>
-        {renderHelperText && (
-            <FormHelperText error={!!error}>{renderHelperText}</FormHelperText>
-        )}
+        {
+            renderHelperText && (
+                <FormHelperText error={!!error}>{renderHelperText}</FormHelperText>
+            )
+        }
       </FormControl>
   )
 })
-CheckboxElement.displayName = 'CheckboxElement'
-export default CheckboxElement as CheckboxElementComponent

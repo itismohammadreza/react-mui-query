@@ -1,48 +1,36 @@
-import { Control, FieldPath, FieldValues, PathValue, useController, } from 'react-hook-form'
-import { FormControlLabel, FormControlLabelProps, Switch, SwitchProps, useForkRef, } from '@mui/material'
-import { ChangeEvent, forwardRef, Ref, RefAttributes } from 'react'
-import { useTransform } from './useTransform'
+import { Control, FieldPath, FieldValues, PathValue, useController, } from 'react-hook-form';
+import { FormControlLabel, FormControlLabelProps, Switch, SwitchProps, useForkRef, } from '@mui/material';
+import { ChangeEvent, forwardRef, Ref } from 'react';
+import { useTransform } from './useTransform';
 
 export type SwitchElementProps<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
     TValue = unknown,
 > = Omit<FormControlLabelProps, 'control'> & {
-  name: TName
-  control?: Control<TFieldValues>
-  switchProps?: SwitchProps
+  name: TName;
+  control?: Control<TFieldValues>;
+  switchProps?: SwitchProps;
   transform?: {
-    input?: (value: PathValue<TFieldValues, TName>) => TValue
-    output?: (
-        event: ChangeEvent<HTMLInputElement>,
-        checked: boolean
-    ) => PathValue<TFieldValues, TName>
+    input?: (value: PathValue<TFieldValues, TName>) => TValue;
+    output?: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => PathValue<TFieldValues, TName>;
   }
 }
 
-type SwitchElementComponent = <
+export const SwitchElement = forwardRef(function SwitchElement<
     TFieldValues extends FieldValues = FieldValues,
     TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
->(
-    props: SwitchElementProps<TFieldValues, TName, TValue> &
-        RefAttributes<HTMLLabelElement>
-) => JSX.Element
-
-const SwitchElement = forwardRef(function SwitchElement<
-    TFieldValues extends FieldValues = FieldValues,
-    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-    TValue = unknown,
+    TValue = unknown
 >(
     props: SwitchElementProps<TFieldValues, TName, TValue>,
     ref: Ref<HTMLLabelElement>
 ) {
-  const {name, control, switchProps, transform, ...rest} = props
+  const {name, control, switchProps, transform, ...rest} = props;
 
   const {field} = useController({
     name,
     control,
-    disabled: rest.disabled,
+    disabled: rest.disabled
   })
 
   const {value, onChange} = useTransform<TFieldValues, TName, TValue>({
@@ -55,11 +43,11 @@ const SwitchElement = forwardRef(function SwitchElement<
               ? transform.output
               : (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
                 return checked as PathValue<TFieldValues, TName>
-              },
-    },
+              }
+    }
   })
 
-  const handleSwitchRef = useForkRef(field.ref, switchProps?.ref)
+  const handleSwitchRef = useForkRef(field.ref, switchProps?.ref);
 
   return (
       <FormControlLabel
@@ -82,12 +70,9 @@ const SwitchElement = forwardRef(function SwitchElement<
                   }
                 }}
                 ref={handleSwitchRef}
-                checked={!!value}
-            />
+                checked={!!value}/>
           }
           {...rest}
       />
   )
 })
-SwitchElement.displayName = 'SwitchElement'
-export default SwitchElement as SwitchElementComponent
